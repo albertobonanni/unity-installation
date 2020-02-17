@@ -2838,7 +2838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 741959714}
-  - component: {fileID: 741959713}
+  - component: {fileID: 741959715}
   m_Layer: 0
   m_Name: MocapRecorder to Laban
   m_TagString: Untagged
@@ -2846,31 +2846,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &741959713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 741959712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b3d3640705cee04e9dffbaedd67cf7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  avatarModel: {fileID: 1289758274}
-  animSaveToFile: Assets/AzureKinectExamples/KinectDemos/MocapAnimatorDemo/Animations/Anim
-    Laban/MocapRecording.anim
-  captureRootMotion: 1
-  mocapPlayer: {fileID: 1649982005}
-  countdown:
-  - {fileID: 1449118427}
-  - {fileID: 716815481}
-  - {fileID: 1157996869}
-  recIcon: {fileID: 734900246}
-  infoText: {fileID: 140217962}
-  TimeDelayUntilRecording: 10
-  mode: 0
 --- !u!4 &741959714
 Transform:
   m_ObjectHideFlags: 0
@@ -2885,6 +2860,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &741959715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741959712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d834dabcef30b488386a2508ef9fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarModel: {fileID: 1289758274}
+  animSaveToFile: Assets/AzureKinectExamples/KinectDemos/MocapAnimatorDemo/Animations/Anim
+    Laban.anim
+  captureRootMotion: 1
+  mocapPlayer: {fileID: 478146015}
+  countdown:
+  - {fileID: 1449118427}
+  - {fileID: 716815481}
+  - {fileID: 1157996869}
+  recIcon: {fileID: 734900246}
+  infoText: {fileID: 140217962}
+  TimeDelayUntilRecording: 90
 --- !u!1 &749538721
 GameObject:
   m_ObjectHideFlags: 0
@@ -3194,7 +3193,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: e47480190d0e869469d9c48643460eb5,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 0d6ee2752a176674fb64b57080273c7a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e16f03ebab6cecc4da05a83a5dad7dcb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4016,7 +4015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1036127479
 Transform:
   m_ObjectHideFlags: 0
@@ -4038,7 +4037,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036127478}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -6290,7 +6289,7 @@ MonoBehaviour:
   - {fileID: 1157996869}
   recIcon: {fileID: 734900246}
   infoText: {fileID: 140217962}
-  TimeDelayUntilRecording: 10
+  TimeDelayUntilRecording: 90
   mode: 1
 --- !u!4 &1930565745
 Transform:
@@ -6532,7 +6531,7 @@ VFXRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2073454179}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 0
@@ -6542,6 +6541,7 @@ VFXRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 0}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -6571,7 +6571,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2073454179}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 70ed7ab9ddb2dc9a2957ad0a45b516ea, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 8365f8b61211611e49c33e93322e49c3, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0

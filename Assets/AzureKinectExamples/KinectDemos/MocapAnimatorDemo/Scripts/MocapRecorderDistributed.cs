@@ -9,7 +9,7 @@ namespace com.rfilkov.components
     /// <summary>
     /// MocapRecorder records the avatar motion into the given animation clip.
     /// </summary>
-    public class MocapRecorder : MonoBehaviour
+    public class MocapRecorderDistributed : MonoBehaviour
     {
         [Tooltip("The avatar, whose motion will be captured in the animation clip.")]
         public AvatarController avatarModel;
@@ -35,7 +35,8 @@ namespace com.rfilkov.components
         //Some extra codings
 
         public float TimeDelayUntilRecording;
-
+     
+        
 
 
         // reference to the avatar's animator component
@@ -57,10 +58,25 @@ namespace com.rfilkov.components
         // initial model's root position
         private Vector3 initialRootPos = Vector3.zero;
 
+        [Header("Custom Settings")]
+        public  Mode mode = Mode.Original;
 
+        public enum Mode 
+        {
+            Original,
+            Distributed
+        }
+
+        MocapDistributor distributor;
+
+        uint fileId = 0;
 
         void Start()
         {
+           
+            if(mode == Mode.Distributed)
+                distributor = GetComponent<MocapDistributor>();
+
             if(avatarModel)
             {
                 modelAnimator = avatarModel.gameObject.GetComponent<Animator>();
@@ -87,6 +103,7 @@ namespace com.rfilkov.components
             // check for Space-key
             if(Input.GetButtonDown("Jump"))
             {
+               
                 if(!isRecording)
                 {
                     if(!isCountingDown && avatarModel && avatarModel.playerId != 0)
@@ -99,6 +116,7 @@ namespace com.rfilkov.components
                 else
                 {
                     StopRecording();
+                    
                 }
             }
 
@@ -142,7 +160,7 @@ namespace com.rfilkov.components
         // counts down (from 3 for instance), then starts the animation recording
         private IEnumerator CountdownAndStartRecording()
         {
-            yield return new WaitForSeconds(TimeDelayUntilRecording);
+           yield return new WaitForSeconds (TimeDelayUntilRecording);
             if (countdown != null && countdown.Length > 0)
             {
                 for (int i = 0; i < countdown.Length; i++)
@@ -222,11 +240,21 @@ namespace com.rfilkov.components
                 if (isAnythingRecorded)
                 {
                     AnimationClip animClip = CreateAnimationClip();
-                    SaveAnimationClip(animClip);
 
-                    if (mocapPlayer)
+                    SaveAnimationClip(animClip);
+                    if(mode == Mode.Original)
                     {
-                        mocapPlayer.PlayAnimationClip(animClip);
+                        if (mocapPlayer)
+                        {
+                            mocapPlayer.PlayAnimationClip(animClip);
+                        }
+                    }
+                    else if(mode == Mode.Distributed)
+                    {
+                        if(distributor)
+                        {
+                            distributor.SetPlayerAnimation(animClip);
+                        }
                     }
                 }
                 else
@@ -304,32 +332,70 @@ namespace com.rfilkov.components
                 return;
             }
 
-            // save the clip
-            int iP = animSaveToFile.LastIndexOf('/');
-            string animName = (iP >= 0 ? animSaveToFile.Substring(iP + 1) : animSaveToFile).Trim();
+            if(mode == Mode.Original)
+            {
+                // save the clip
+                int iP = animSaveToFile.LastIndexOf('/');
+                string animName = (iP >= 0 ? animSaveToFile.Substring(iP + 1) : animSaveToFile).Trim();
 
-            if (animName.EndsWith(".anim"))
-                animName = animName.Substring(0, animName.Length - 5);
+                if (animName.EndsWith(".anim"))
+                    animName = animName.Substring(0, animName.Length - 5);
 
-            animClip.name = animName;
+                animClip.name = animName;
 
-#if UNITY_EDITOR
-            UnityEditor.AssetDatabase.CreateAsset(animClip, animSaveToFile);
+                #if UNITY_EDITOR
+                    UnityEditor.AssetDatabase.CreateAsset(animClip, animSaveToFile);
 
-            // set loop time to true
-            UnityEditor.AnimationClipSettings settings = UnityEditor.AnimationUtility.GetAnimationClipSettings(animClip);
-            settings.loopTime = true;
-            UnityEditor.AnimationUtility.SetAnimationClipSettings(animClip, settings);
+                    // set loop time to true
+                    UnityEditor.AnimationClipSettings settings = UnityEditor.AnimationUtility.GetAnimationClipSettings(animClip);
+                    settings.loopTime = true;
+                    UnityEditor.AnimationUtility.SetAnimationClipSettings(animClip, settings);
+
+                    Debug.Log("Animation clip saved: " + animSaveToFile);
+                   
+                #else
+                    ShowMessage("The animation clip can be saved only in Unity editor.");
+                #endif
+
+                // clear the animation curves
+                muscleCurves.Clear();
+                rootPoseCurves.Clear();
+            }
+            else if(mode == Mode.Distributed)
+            {
+                string animSaveToFileNu = "";
+                if (animSaveToFile.EndsWith(".anim"))
+                {
+                    animSaveToFileNu = animSaveToFile.Insert(animSaveToFile.Length - 5, fileId.ToString("D4"));
+                    //print(animSaveToFileNu);
+                }
+
+                int iP = animSaveToFileNu.LastIndexOf('/');
+                string animName = (iP >= 0 ? animSaveToFileNu.Substring(iP + 1) : animSaveToFileNu).Trim();
+
+                if (animName.EndsWith(".anim"))
+                        animName = animName.Substring(0, animName.Length - 5);
+                // print("Name: " + animName);
+                fileId++;
 
 
-            Debug.Log("Animation clip saved: " + animSaveToFile);
-#else
-            ShowMessage("The animation clip can be saved only in Unity editor.");
-#endif
+                #if UNITY_EDITOR
+                    UnityEditor.AssetDatabase.CreateAsset(animClip, animSaveToFileNu);
 
-            // clear the animation curves
-            muscleCurves.Clear();
-            rootPoseCurves.Clear();
+                    // set loop time to true
+                    UnityEditor.AnimationClipSettings settings = UnityEditor.AnimationUtility.GetAnimationClipSettings(animClip);
+                    settings.loopTime = true;
+                    UnityEditor.AnimationUtility.SetAnimationClipSettings(animClip, settings);
+                    
+                    Debug.Log("Animation clip saved: " + animSaveToFileNu);
+                #else
+                    ShowMessage("The animation clip can be saved only in Unity editor.");
+                #endif
+
+                // clear the animation curves
+                muscleCurves.Clear();
+                rootPoseCurves.Clear();
+            }
         }
 
     }
