@@ -15,7 +15,7 @@ namespace com.rfilkov.components
         public AvatarController avatarModel;
 
         [Tooltip("Full path to the file, where the animation clip will be saved at the end of animation recording.")]
-        public string animSaveToFile = "Assets/AzureKinectExamples/KinectDemos/MocapAnimatorDemo/Animations/Recorded.anim";
+        public string animSaveToFile = "Assets/AzureKinectExamples/KinectDemos/MocapAnimatorDemo/Animations/Anim Laban.anim";
 
         [Tooltip("Whether to capture the root motion as well.")]
         public bool captureRootMotion = true;
@@ -319,6 +319,9 @@ namespace com.rfilkov.components
             // set loop time to true
             UnityEditor.AnimationClipSettings settings = UnityEditor.AnimationUtility.GetAnimationClipSettings(animClip);
             settings.loopTime = true;
+            settings.keepOriginalOrientation = true;
+            settings.keepOriginalPositionXZ = true;
+            settings.keepOriginalPositionY = true;
             UnityEditor.AnimationUtility.SetAnimationClipSettings(animClip, settings);
 
 
