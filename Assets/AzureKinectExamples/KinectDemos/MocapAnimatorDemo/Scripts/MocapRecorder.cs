@@ -321,7 +321,7 @@ namespace com.rfilkov.components
             settings.loopTime = true;
             settings.keepOriginalOrientation = true;
             settings.keepOriginalPositionXZ = true;
-            settings.keepOriginalPositionY = true;
+            settings.keepOriginalPositionY = true; 
             UnityEditor.AnimationUtility.SetAnimationClipSettings(animClip, settings);
 
 
