@@ -9,8 +9,10 @@
     }
   ],
   "dependencies": {
+    "com.unity.cinemachine": "2.5.0",
+    "com.unity.recorder": "2.2.0-preview.4",
     "com.unity.render-pipelines.high-definition": "7.1.8",
-    "com.unity.timeline": "1.2.10",
+    "com.unity.timeline": "1.2.12",
     "jp.keijiro.beta": "1.0.0",
     "jp.keijiro.cmu-mocap": "1.0.0"
   }
